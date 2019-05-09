@@ -113,10 +113,25 @@ class rbenv (
   }
 
   if $manage_profile {
-    file { '/etc/profile.d/rbenv.sh':
-      ensure  => file,
-      content => template('rbenv/rbenv.sh'),
-      mode    => '0775'
+    case $::osfamily {
+    'Darwin': {
+      file { '/etc/paths.d/rbenv':
+        ensure  => file,
+        content => "${install_dir}/bin",
+        mode    => '0644'
+      }
+      file { '/etc/profile':
+        ensure  => file,
+        content => template('rbenv/profile.sh'),
+        mode    => '0444'
+      }
+    }
+    default: {
+      file { '/etc/profile.d/rbenv.sh':
+        ensure  => file,
+        content => template('rbenv/rbenv.sh'),
+        mode    => '0775'
+      }
     }
   }
 
