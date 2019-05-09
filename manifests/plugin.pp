@@ -50,8 +50,8 @@ define rbenv::plugin(
   exec { "install-${name}":
     command => "/usr/bin/git clone ${repo_path}",
     cwd     => "${install_dir}/plugins",
-    onlyif  => "/usr/bin/test -d ${install_dir}/plugins",
-    unless  => "/usr/bin/test -d ${install_dir}/plugins/${plugin[1]}",
+    onlyif  => "test -d ${install_dir}/plugins",
+    unless  => "test -d ${install_dir}/plugins/${plugin[1]}",
   }
   ~> exec { "rbenv-permissions-${name}":
     command     => "/bin/chown -R ${rbenv::owner}:${rbenv::group} \
@@ -66,7 +66,7 @@ define rbenv::plugin(
       command => '/usr/bin/git pull',
       cwd     => "${install_dir}/plugins/${plugin[1]}",
       user    => $rbenv::owner,
-      onlyif  => "/usr/bin/test -d ${install_dir}/plugins/${plugin[1]}",
+      onlyif  => "test -d ${install_dir}/plugins/${plugin[1]}",
       unless  => '/usr/bin/git fetch --quiet; /usr/bin/test $(git rev-parse HEAD) == $(git rev-parse @{u})',
     }
   }
