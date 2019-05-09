@@ -91,6 +91,7 @@ define rbenv::gem(
   exec { "ruby-${ruby_version}-gem-install-${gem}-${version_for_exec_name}":
     command => "gem install ${gem} --version '${version}' ${docs} --source '${source}'",
     unless  => "gem list ${gem} --installed --version '${version}'",
+  }
   ~> exec { "ruby-${ruby_version}-rbenv-rehash-${gem}-${version_for_exec_name}":
     command     => "${install_dir}/bin/rbenv rehash",
     refreshonly => true,
