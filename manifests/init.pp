@@ -143,7 +143,7 @@ class rbenv (
       cwd         => $install_dir,
       user        => $owner,
       environment => $env,
-      onlyif      => '/usr/bin/test $(git rev-parse --abbrev-ref HEAD) != "master"',
+      onlyif      => 'test $(git rev-parse --abbrev-ref HEAD) != "master"',
       require     => File[$install_dir],
     }
     -> exec { 'update-rbenv':
@@ -151,7 +151,7 @@ class rbenv (
       cwd         => $install_dir,
       user        => $owner,
       environment => $env,
-      unless      => '/usr/bin/git fetch --quiet; /usr/bin/test $(git rev-parse HEAD) == $(git rev-parse @{u})',
+      unless      => '/usr/bin/git fetch --quiet; test $(git rev-parse HEAD) == $(git rev-parse @{u})',
       require     => File[$install_dir],
     }
   } elsif $version {

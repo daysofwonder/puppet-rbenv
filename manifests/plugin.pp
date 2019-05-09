@@ -62,9 +62,9 @@ define rbenv::plugin(
     unless  => "test -d ${install_dir}/plugins/${plugin[1]}",
   }
   ~> exec { "rbenv-permissions-${name}":
-    command     => "/bin/chown -R ${rbenv::owner}:${rbenv::group} \
+    command     => "chown -R ${rbenv::owner}:${rbenv::group} \
                     ${install_dir} && \
-                    /bin/chmod -R g+w ${install_dir}",
+                    chmod -R g+w ${install_dir}",
     refreshonly => true,
   }
 
@@ -75,7 +75,7 @@ define rbenv::plugin(
       cwd     => "${install_dir}/plugins/${plugin[1]}",
       user    => $rbenv::owner,
       onlyif  => "test -d ${install_dir}/plugins/${plugin[1]}",
-      unless  => '/usr/bin/git fetch --quiet; /usr/bin/test $(git rev-parse HEAD) == $(git rev-parse @{u})',
+      unless  => '/usr/bin/git fetch --quiet; test $(git rev-parse HEAD) == $(git rev-parse @{u})',
     }
   }
 }
