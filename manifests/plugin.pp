@@ -45,7 +45,15 @@ define rbenv::plugin(
 
   $plugin = split($name, '/') # divide plugin name into array
 
-  Exec { environment => $env }
+  Exec { 
+    environment => $env, 
+    path        => [
+      '/bin/',
+      '/sbin/',
+      '/usr/bin/',
+      '/usr/sbin/'
+    ],
+ }
 
   exec { "install-${name}":
     command => "/usr/bin/git clone ${repo_path}",
